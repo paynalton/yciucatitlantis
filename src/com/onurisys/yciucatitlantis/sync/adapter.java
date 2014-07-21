@@ -19,7 +19,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
+//import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.onurisys.yciucatitlantis.alertas.DBhelper;
 
 import android.accounts.Account;
@@ -30,6 +30,8 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
+import java.text.*;
+import java.util.*;
 
 public class adapter  extends AbstractThreadedSyncAdapter {
 	ContentResolver mContentResolver;
@@ -64,9 +66,12 @@ public class adapter  extends AbstractThreadedSyncAdapter {
 			ContentProviderClient arg3, SyncResult arg4) {
 		String xml = null;
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		int gservicesAvaliable=GooglePlayServicesUtil.isGooglePlayServicesAvailable(contexto);
-		Log.v("Servicios",String.format("%i", gservicesAvaliable));
-		HttpGet httpPost = new HttpGet("http://ycicatetantlis.onurisys.com:500/?lat=19.466349&lon=-99.163413&d=600&t=2014-07-14T18:34:00-05:00");
+		//int gservicesAvaliable=GooglePlayServicesUtil.isGooglePlayServicesAvailable(contexto);
+		//Log.v("Servicios",String.format("%i", gservicesAvaliable));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		String currentDateandTime = sdf.format(new Date());
+		Log.v("fecha",currentDateandTime);
+		HttpGet httpPost = new HttpGet(String.format("http://ycicatetantlis.onurisys.com:500/?lat=19.466349&lon=-99.163413&d=600&t=%s",currentDateandTime));
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			HttpEntity httpEntity = httpResponse.getEntity();
@@ -168,7 +173,7 @@ public class adapter  extends AbstractThreadedSyncAdapter {
 					}
 				}
 				else {
-					Log.v("Nodo Ignorado",datos.item(j).getNodeName());
+					//Log.v("Nodo Ignorado",datos.item(j).getNodeName());
 				}
 			}
 			}catch(UnsupportedEncodingException e){
@@ -181,7 +186,7 @@ public class adapter  extends AbstractThreadedSyncAdapter {
 					"'"+updated+"'" +","+
 							")";
 			
-			Log.v("Insertando",query);
+			//Log.v("Insertando",query);
 		}
 		
 	}
