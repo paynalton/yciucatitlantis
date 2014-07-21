@@ -1,6 +1,5 @@
 package com.onurisys.yciucatitlantis.sync;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -13,15 +12,14 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.onurisys.yciucatitlantis.alertas.DBhelper;
 
 import android.accounts.Account;
@@ -30,7 +28,6 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -67,7 +64,9 @@ public class adapter  extends AbstractThreadedSyncAdapter {
 			ContentProviderClient arg3, SyncResult arg4) {
 		String xml = null;
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		HttpGet httpPost = new HttpGet("http://192.168.0.100/alertas.xml");
+		int gservicesAvaliable=GooglePlayServicesUtil.isGooglePlayServicesAvailable(contexto);
+		Log.v("Servicios",String.format("%i", gservicesAvaliable));
+		HttpGet httpPost = new HttpGet("http://ycicatetantlis.onurisys.com:500/?lat=19.466349&lon=-99.163413&d=600&t=2014-07-14T18:34:00-05:00");
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			HttpEntity httpEntity = httpResponse.getEntity();
