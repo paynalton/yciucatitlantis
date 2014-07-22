@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.util.Log;
 import java.text.*;
 import java.util.*;
+import android.database.sqlite.*;
 
 public class adapter  extends AbstractThreadedSyncAdapter {
 	ContentResolver mContentResolver;
@@ -85,9 +86,9 @@ public class adapter  extends AbstractThreadedSyncAdapter {
 			e.printStackTrace();
 		}
 		Document Alertas=parseXML(xml);
-		//DBhelper dbh = new DBhelper(contexto,"Alertas",null,1);
+		DBhelper dbh = new DBhelper(contexto,"Alertas",null,1);
 		
-		//SQLiteDatabase db = dbh.getWritableDatabase();
+		SQLiteDatabase db = dbh.getWritableDatabase();
 		
 		NodeList entries=Alertas.getElementsByTagName("entry");
 		
@@ -180,12 +181,12 @@ public class adapter  extends AbstractThreadedSyncAdapter {
 				
 			}
 			
-			String query="insert into Alertas values(" +
+			String query="insert into Alertas(id,title,updated) values(" +
 					"'"+id+"'" +","+
 					"'"+title+"'" +","+
 					"'"+updated+"'" +","+
 							")";
-			
+			db.execSQL(query);
 			//Log.v("Insertando",query);
 		}
 		
